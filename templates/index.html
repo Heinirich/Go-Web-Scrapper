@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Jiji Styled Listings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Trending Ads</h1>
+    <div id="listings" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+</div>
+
+<script>
+    fetch('/api/listings')
+        .then(res => res.json())
+        .then(data => {
+            const container = document.getElementById('listings');
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden border border-gray-200";
+
+                card.innerHTML = `
+            <img class="w-full h-48 object-cover" src="${item.Image}" alt="${item.Name}">
+            <div class="p-4 space-y-2">
+              <p class="text-green-600 font-bold text-lg">${item.Price}</p>
+              <h2 class="text-gray-900 font-semibold text-md">${item.Name}</h2>
+              <p class="text-sm text-gray-600 line-clamp-2">In good condition, accident free, ready to drive...</p>
+              <div class="flex flex-wrap gap-2 text-xs text-gray-700 mt-2">
+                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full">Nairobi</span>
+                <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">Local Used</span>
+                <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full">Automatic</span>
+              </div>
+            </div>
+          `;
+                container.appendChild(card);
+            });
+        });
+</script>
+</body>
+</html>
