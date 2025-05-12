@@ -11,14 +11,30 @@
     <div id="listings" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
 </div>
 
+<!-- Modal -->
+<div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white w-full max-w-md rounded-lg shadow-lg p-6 relative">
+        <button id="closeModal" class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-xl">&times;</button>
+        <img id="modalImage" class="w-full h-64 object-cover rounded mb-4" src="" alt="">
+        <h2 id="modalName" class="text-xl font-semibold text-gray-800 mb-2"></h2>
+        <p id="modalPrice" class="text-green-600 font-bold text-lg"></p>
+    </div>
+</div>
+
 <script>
     fetch('/api/listings')
         .then(res => res.json())
         .then(data => {
             const container = document.getElementById('listings');
+            const modal = document.getElementById('modal');
+            const modalImage = document.getElementById('modalImage');
+            const modalName = document.getElementById('modalName');
+            const modalPrice = document.getElementById('modalPrice');
+            const closeModal = document.getElementById('closeModal');
+
             data.forEach(item => {
                 const card = document.createElement('div');
-                card.className = "bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden border border-gray-200";
+                card.className = "bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden border border-gray-200 cursor-pointer";
 
                 card.innerHTML = `
             <img class="w-full h-48 object-cover" src="${item.Image}" alt="${item.Name}">
@@ -33,8 +49,21 @@
               </div>
             </div>
           `;
+
+                card.onclick = () => {
+                    modalImage.src = item.Image;
+                    modalName.textContent = item.Name;
+                    modalPrice.textContent = item.Price;
+                    modal.classList.remove("hidden");
+                };
+
                 container.appendChild(card);
             });
+
+            closeModal.onclick = () => modal.classList.add("hidden");
+            modal.onclick = e => {
+                if (e.target === modal) modal.classList.add("hidden");
+            };
         });
 </script>
 </body>
