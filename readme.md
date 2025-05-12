@@ -2,6 +2,8 @@
 
 A simple web scraping application built with Go using the Colly framework. This application scrapes listings from the Jiji website and displays them in a user-friendly format.
 
+![Screenshot](static/screenshot.png)
+
 ## Features
 
 - Scrapes images, prices, and names of listings.
